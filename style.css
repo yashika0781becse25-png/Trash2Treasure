@@ -226,3 +226,94 @@ body {
   height: auto;
   margin: 0 10px;
 }
+/* ================================
+   BOOTSTRAP MODAL THEME (SAFE)
+   DOES NOT TOUCH NAVBAR / HERO
+================================ */
+
+/* Modal background */
+.modal-content {
+  border-radius: 20px;
+  border: none;
+  background: linear-gradient(135deg, #e9f7ef, #dff5e7);
+}
+
+/* Modal header */
+.modal-header {
+  background: linear-gradient(135deg, #7ed9a4, #4caf7a);
+  color: white;
+  border-bottom: none;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+}
+
+/* Modal title */
+.modal-title {
+  font-weight: 600;
+}
+
+/* Pills (Signup / Login tabs) */
+.nav-pills .nav-link {
+  border-radius: 30px;
+  padding: 8px 20px;
+  color: #2f6f4e;
+}
+
+.nav-pills .nav-link.active {
+  background: linear-gradient(135deg, #7ed9a4, #4caf7a);
+  color: white;
+}
+
+/* Inputs */
+.modal-body .form-control {
+  border-radius: 30px;
+  padding: 12px 18px;
+}
+
+/* Buttons */
+.modal-body .btn-success,
+.modal-body .btn-primary {
+  border-radius: 30px;
+  background: linear-gradient(135deg, #7ed9a4, #4caf7a);
+  border: none;
+}
+
+.modal-body .btn-success:hover,
+.modal-body .btn-primary:hover {
+  opacity: 0.9;
+}
+
+/* =====================================
+   PROTECT CUSTOM NAVBAR FROM BOOTSTRAP
+   (CRITICAL FIX)
+===================================== */
+
+/* Force navbar links to ignore Bootstrap */
+.eco-navbar-horizontal .nav-link {
+  text-decoration: none !important;
+  padding: 8px 18px !important;
+  border-radius: 30px !important;
+  font-weight: 500 !important;
+  color: #3c7a5a !important;
+  background: transparent !important;
+  display: inline-block !important;
+}
+
+/* Hover */
+.eco-navbar-horizontal .nav-link:hover {
+  background: #dff5e7 !important;
+  color: #1f5138 !important;
+}
+
+/* Active pill (Home) */
+.eco-navbar-horizontal .nav-link.active {
+  background: linear-gradient(135deg, #7ed9a4, #4caf7a) !important;
+  color: #ffffff !important;
+}
+
+/* Prevent Bootstrap nav styles leaking */
+.eco-navbar-horizontal .nav,
+.eco-navbar-horizontal .nav-pills {
+  all: unset;
+}
+
