@@ -1,0 +1,1505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Portal - Environmental Impact Tracker</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    
+    <style>
+        :root {
+            --primary-green: #4CAF50;
+            --dark-green: #2e7d32;
+            --light-green: #e8f5e9;
+            --sidebar-width: 220px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: linear-gradient(
+        135deg,
+        #e0f2fe 0%,
+        #fefce8 40%,
+        #ccfbf1 100%
+    );
+    background-attachment: fixed;
+    overflow-x: hidden;
+    padding: 20px 15px; 
+}
+
+        /* Animated Background Particles */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+
+        .bg-particle {
+            position: fixed;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            animation: float 6s ease-in-out infinite;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Sidebar Styles with Glassmorphism */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            width: var(--sidebar-width);
+            background: rgba(15, 118, 110, 0.95);
+            backdrop-filter: blur(10px);
+            color: white;
+            overflow-y: auto;
+            z-index: 1000;
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            box-shadow: 5px 0 30px rgba(0, 0, 0, 0.3);
+}
+        
+
+        .sidebar::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+        }
+
+        .sidebar-header {
+            padding: 30px 20px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .sidebar-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            animation: shine 3s infinite;
+        }
+
+        @keyframes shine {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .sidebar-header .admin-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+            font-size: 40px;
+            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.5);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .sidebar-header h4 {
+            margin: 10px 0 0 0;
+            font-size: 22px;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .sidebar-menu {
+            padding: 20px 0;
+        }
+
+        .sidebar-menu-item {
+            padding: 15px 25px;
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            cursor: pointer;
+            position: relative;
+            margin: 5px 15px;
+            border-radius: 12px;
+        }
+
+        .sidebar-menu-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 4px;
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            border-radius: 10px;
+            transform: scaleY(0);
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar-menu-item:hover,
+        .sidebar-menu-item.active {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateX(10px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .sidebar-menu-item:hover::before,
+        .sidebar-menu-item.active::before {
+            transform: scaleY(1);
+        }
+
+        .sidebar-menu-item i {
+            margin-right: 15px;
+            font-size: 20px;
+            width: 25px;
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar-menu-item:hover i,
+        .sidebar-menu-item.active i {
+            transform: rotate(10deg) scale(1.2);
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: var(--sidebar-width);
+            padding: 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Top Navigation with Glassmorphism */
+        .top-nav {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 20px 30px;
+            box-shadow: 0 5px 30px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: 0 0 20px 20px;
+        }
+
+    
+        .top-nav h5 {
+    background: linear-gradient(90deg, #0f766e, #1e293b);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 700;
+}
+
+        .top-nav .btn {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .top-nav .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .top-nav .badge {
+            animation: bounce 1s ease-in-out infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
+        .content-area {
+            padding: 30px;
+            animation: fadeIn 0.6s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Enhanced Stats Cards */
+        .stat-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            position: relative;
+            overflow: hidden;
+            border: 2px solid transparent;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .stat-card:hover::before {
+            left: 100%;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+            border: 2px solid rgba(76, 175, 80, 0.5);
+        }
+
+        .stat-icon {
+            width: 70px;
+            height: 70px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-card:hover .stat-icon {
+            transform: rotate(10deg) scale(1.1);
+        }
+
+        .stat-icon.green { 
+            background: linear-gradient(135deg, #0f766e, #2dd4bf);
+        }
+        .stat-icon.blue { 
+           background: linear-gradient(135deg, #0284c7, #38bdf8);
+        }
+        .stat-icon.orange { 
+            background: linear-gradient(135deg, #f59e0b, #fde68a);
+}
+        .stat-icon.purple { 
+        
+            background: linear-gradient(135deg, #475569, #94a3b8);
+        }
+
+        .stat-card h3 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, #0f766e, #1e293b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+        /* Enhanced Tables */
+        .custom-table {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            animation: slideUp 0.6s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .table th {
+            background: linear-gradient(135deg, #4CAF50, #81C784);
+            color: white;
+            font-weight: 600;
+            border: none;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 15px;
+        }
+ /* .table th {
+    background: linear-gradient(90deg, #0f766e, #2dd4bf);
+    color: white;
+} */
+        .table tbody tr { 
+            transition: all 0.3s ease;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            }
+
+        .table tbody tr:hover {
+            background: linear-gradient(90deg, rgba(76, 175, 80, 0.1), transparent);
+            transform: scale(1.01);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .badge-status {
+            padding: 8px 16px;
+            border-radius: 25px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Enhanced Action Buttons */
+        .action-btn {
+            padding: 8px 12px;
+            margin: 0 3px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .action-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            transform: translate(-50%, -50%);
+            transition: width 0.3s ease, height 0.3s ease;
+        }
+
+        .action-btn:hover::before {
+            width: 100px;
+            height: 100px;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-3px) scale(1.15);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .action-btn:active {
+            transform: translateY(0) scale(1);
+        }
+
+        /* Section Content Animation */
+        .section-content {
+            display: none;
+        }
+
+        .section-content.active {
+            display: block;
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Charts Container */
+        .chart-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            min-height: 300px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .chart-container::before {
+            content: '';
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(76, 175, 80, 0.1), transparent);
+            border-radius: 50%;
+            top: -150px;
+            right: -150px;
+            animation: rotate 10s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .chart-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Enhanced Buttons */
+        .btn-success {
+            background: linear-gradient(135deg, #0f766e, #2dd4bf);
+            border: none;
+            box-shadow: 0 5px 15px rgba(76, 175, 80, 0.4);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+
+        .btn-success::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .btn-success:hover::before {
+            left: 100%;
+        }
+
+        .btn-success:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 10px 25px rgba(76, 175, 80, 0.5);
+        }
+
+        /* Card Enhancement */
+        .card {
+            border: none;
+            
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 28px 22px;    
+            min-height: 360px;     
+            border-radius: 16px;
+}
+        .card-icon-wrapper 
+        { width: 90px;
+    height: 90px;
+    margin-bottom: 18px;}
+    .card-icon {
+    font-size: 3em;   /* was 5em */
+}
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.2);
+        }
+.card h2 {
+    font-size: 1.4em;   /* was 1.8em */
+    margin-bottom: 12px;
+}
+
+.card p {
+    font-size: 0.95em;
+    margin-bottom: 20px;
+}
+ .card-button {
+    padding: 10px 26px;   /* smaller height */
+    font-size: 0.9em;
+    border-radius: 22px;
+}
+.cards-grid {
+    gap: 20px;   /* was 30px */
+}
+        /* Form Enhancement */
+        .form-control, .form-select {
+            border-radius: 12px;
+            border: 2px solid rgba(76, 175, 80, 0.2);
+            padding: 12px 15px;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: #4CAF50;
+            box-shadow: 0 0 20px rgba(76, 175, 80, 0.3);
+            transform: translateY(-2px);
+        }
+
+        /* Pagination Enhancement */
+        .pagination .page-link {
+            border-radius: 10px;
+            margin: 0 5px;
+            border: none;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .pagination .page-link:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            background: linear-gradient(135deg, #4CAF50, #81C784);
+            color: white;
+        }
+
+        /* Tab Enhancement */
+        .nav-tabs .nav-link {
+            border: none;
+            border-radius: 15px 15px 0 0;
+            padding: 12px 25px;
+            transition: all 0.3s ease;
+            color: #666;
+        }
+
+        .nav-tabs .nav-link:hover {
+            background: rgba(76, 175, 80, 0.1);
+            transform: translateY(-3px);
+        }
+
+        .nav-tabs .nav-link.active {
+            background: linear-gradient(135deg, #4CAF50, #81C784);
+            color: white;
+            box-shadow: 0 5px 15px rgba(76, 175, 80, 0.4);
+        }
+
+        /* List Group Enhancement */
+        .list-group-item {
+            border: none;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .list-group-item:hover {
+            background: rgba(76, 175, 80, 0.1);
+            transform: translateX(10px);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Alert Enhancement */
+        .alert {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            animation: slideDown 0.5s ease-out;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Switch Enhancement */
+        .form-check-input:checked {
+            background: linear-gradient(135deg, #4CAF50, #81C784);
+            border-color: #4CAF50;
+            box-shadow: 0 0 10px rgba(76, 175, 80, 0.5);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.show {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .stat-card {
+                margin-bottom: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating Background Particles -->
+    <div class="bg-particle" style="width: 100px; height: 100px; top: 10%; left: 10%; animation-delay: 0s;"></div>
+    <div class="bg-particle" style="width: 150px; height: 150px; top: 50%; right: 15%; animation-delay: 2s;"></div>
+    <div class="bg-particle" style="width: 80px; height: 80px; bottom: 20%; left: 20%; animation-delay: 4s;"></div>
+    <div class="bg-particle" style="width: 120px; height: 120px; top: 70%; right: 30%; animation-delay: 1s;"></div>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <div class="admin-icon">
+                <i class="bi bi-shield-check"></i>
+            </div>
+            <h4>Admin Portal</h4>
+            <small style="opacity: 0.8;">Environmental Impact Tracker</small>
+        </div>
+        <div class="sidebar-menu">
+            <a class="sidebar-menu-item active" data-section="dashboard">
+                <i class="bi bi-speedometer2"></i>
+                <span>Dashboard</span>
+            </a>
+            <a class="sidebar-menu-item" data-section="organizations">
+                <i class="bi bi-building"></i>
+                <span>Organizations</span>
+            </a>
+            <a class="sidebar-menu-item" data-section="users">
+                <i class="bi bi-people"></i>
+                <span>User Management</span>
+            </a>
+            <a class="sidebar-menu-item" data-section="content">
+                <i class="bi bi-file-text"></i>
+                <span>Content Management</span>
+            </a>
+            <a class="sidebar-menu-item" data-section="impact">
+                <i class="bi bi-graph-up"></i>
+                <span>Impact Data</span>
+            </a>
+            <a class="sidebar-menu-item" data-section="analytics">
+                <i class="bi bi-bar-chart"></i>
+                <span>Analytics & Reports</span>
+            </a>
+            <a class="sidebar-menu-item" data-section="settings">
+                <i class="bi bi-gear"></i>
+                <span>Settings</span>
+            </a>
+            <hr style="border-color: rgba(255,255,255,0.2); margin: 20px;">
+            <a class="sidebar-menu-item" href="#">
+                <i class="bi bi-box-arrow-left"></i>
+                <span>Logout</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Top Navigation -->
+        <div class="top-nav">
+            <div>
+                <h5 class="mb-0">Welcome back, Admin 👋</h5>
+                <small class="text-muted">Thursday, January 29, 2026</small>
+            </div>
+            <div>
+                <button class="btn btn-light me-2">
+                    <i class="bi bi-bell"></i>
+                    <span class="badge bg-danger">3</span>
+                </button>
+                <button class="btn btn-light">
+                    <i class="bi bi-person-circle"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Content Area -->
+        <div class="content-area">
+            
+            <!-- Dashboard Section -->
+            <div class="section-content active" id="dashboard">
+                <h3 class="mb-4" style="font-weight: 700; color: white; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">
+                    Dashboard Overview
+                </h3>
+                
+                <!-- Stats Cards -->
+                <div class="row g-4 mb-4">
+                    <div class="col-md-6 col-xl-3">
+                        <div class="stat-card">
+                            <div class="stat-icon green">
+                                <i class="bi bi-building text-white"></i>
+                            </div>
+                            <h3 class="mb-1">547</h3>
+                            <p class="text-muted mb-0">Total Organizations</p>
+                            <small class="text-success">
+                                <i class="bi bi-arrow-up"></i> 12% from last month
+                            </small>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-xl-3">
+                        <div class="stat-card">
+                            <div class="stat-icon blue">
+                                <i class="bi bi-people text-white"></i>
+                            </div>
+                            <h3 class="mb-1">3,421</h3>
+                            <p class="text-muted mb-0">Active Users</p>
+                            <small class="text-success">
+                                <i class="bi bi-arrow-up"></i> 8% from last month
+                            </small>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-xl-3">
+                        <div class="stat-card">
+                            <div class="stat-icon orange">
+                                <i class="bi bi-globe text-white"></i>
+                            </div>
+                            <h3 class="mb-1">1,245</h3>
+                            <p class="text-muted mb-0">Tons CO₂ Reduced</p>
+                            <small class="text-success">
+                                <i class="bi bi-arrow-up"></i> 15% from last month
+                            </small>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-xl-3">
+                        <div class="stat-card">
+                            <div class="stat-icon purple">
+                                <i class="bi bi-check-circle text-white"></i>
+                            </div>
+                            <h3 class="mb-1">89</h3>
+                            <p class="text-muted mb-0">Pending Approvals</p>
+                            <small class="text-danger">
+                                <i class="bi bi-arrow-up"></i> Needs attention
+                            </small>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Activity & Quick Stats -->
+                <div class="row g-4">
+                    <div class="col-lg-8">
+                        <div class="chart-container">
+                            <h5 class="mb-3" style="font-weight: 600;">📊 Impact Metrics Trend</h5>
+                            <div class="text-center text-muted" style="padding: 80px 0; position: relative; z-index: 1;">
+                                <i class="bi bi-graph-up" style="font-size: 60px; color: #4CAF50;"></i>
+                                <p class="mt-3">Interactive chart visualization would display here<br>
+                                <small>Showing CO₂ reduction over time across all organizations</small></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="custom-table">
+                            <div class="p-3" style="background: linear-gradient(135deg, #4CAF50, #81C784); color: white;">
+                                <h6 class="mb-0">🔔 Recent Activity</h6>
+                            </div>
+                            <div class="list-group list-group-flush">
+                                <div class="list-group-item">
+                                    <small class="text-muted"><i class="bi bi-clock"></i> 2 hours ago</small>
+                                    <p class="mb-0 small"><strong>Green Earth Foundation</strong> registered</p>
+                                </div>
+                                <div class="list-group-item">
+                                    <small class="text-muted"><i class="bi bi-clock"></i> 5 hours ago</small>
+                                    <p class="mb-0 small">Impact data submitted by <strong>EcoTech</strong></p>
+                                </div>
+                                <div class="list-group-item">
+                                    <small class="text-muted"><i class="bi bi-clock"></i> 1 day ago</small>
+                                    <p class="mb-0 small">New announcement published</p>
+                                </div>
+                                <div class="list-group-item">
+                                    <small class="text-muted"><i class="bi bi-clock"></i> 2 days ago</small>
+                                    <p class="mb-0 small">Monthly report generated</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Organizations Section -->
+            <div class="section-content" id="organizations">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h3 style="font-weight: 700; color: white; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">
+                        🏢 Organization Management
+                    </h3>
+                    <button class="btn btn-success">
+                        <i class="bi bi-plus-circle"></i> Add Organization
+                    </button>
+                </div>
+
+                <!-- Search and Filter -->
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <input type="text" class="form-control" placeholder="🔍 Search organizations...">
+                    </div>
+                    <div class="col-md-3">
+                        <select class="form-select">
+                            <option>All Types</option>
+                            <option>Non-Profit</option>
+                            <option>Business</option>
+                            <option>Community Group</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <select class="form-select">
+                            <option>All Status</option>
+                            <option>Active</option>
+                            <option>Pending</option>
+                            <option>Suspended</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Organizations Table -->
+                <div class="custom-table">
+                    <table class="table table-hover mb-0">
+                        <thead>
+                            <tr>
+                                <th>Organization Name</th>
+                                <th>Type</th>
+                                <th>Location</th>
+                                <th>Members</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>🌿 Green Earth Foundation</strong></td>
+                                <td>Non-Profit</td>
+                                <td>California, USA</td>
+                                <td>45</td>
+                                <td><span class="badge bg-success badge-status">Active</span></td>
+                                <td>
+                                    <button class="btn btn-sm btn-outline-primary action-btn" title="View">
+                                        <i class="bi bi-eye"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-success action-btn" title="Edit">
+                                        <i class="bi bi-pencil"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-danger action-btn" title="Suspend">
+                                        <i class="bi bi-x-circle"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>💡 EcoTech Innovations</strong></td>
+                                <td>Business</td>
+                                <td>New York, USA</td>
+                                <td>28</td>
+                                <td><span class="badge bg-warning badge-status">Pending</span></td>
+                                <td>
+                                    <button class="btn btn-sm btn-outline-primary action-btn" title="View">
+                                        <i class="bi bi-eye"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-success action-btn" title="Approve">
+                                        <i class="bi bi-check-circle"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-danger action-btn" title="Reject">
+                                        <i class="bi bi-x-circle"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>🏡 Sustainable Living Community</strong></td>
+                                <td>Community Group</td>
+                                <td>Oregon, USA</td>
+                                <td>67</td>
+                                <td><span class="badge bg-success badge-status">Active</span></td>
+                                <td>
+                                    <button class="btn btn-sm btn-outline-primary action-btn" title="View">
+                                        <i class="bi bi-eye"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-success action-btn" title="Edit">
+                                        <i class="bi bi-pencil"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-danger action-btn" title="Suspend">
+                                        <i class="bi bi-x-circle"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Pagination -->
+                <nav class="mt-4">
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
+                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                        <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                    </ul>
+                </nav>
+            </div>
+
+            <!-- Users Section -->
+            <div class="section-content" id="users">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h3 style="font-weight: 700; color: white; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">
+                        👥 User Management
+                    </h3>
+                    <button class="btn btn-success">
+                        <i class="bi bi-plus-circle"></i> Add User
+                    </button>
+                </div>
+
+                <!-- Search -->
+                <div class="row mb-4">
+                    <div class="col-md-8">
+                        <input type="text" class="form-control" placeholder="🔍 Search users by name or email...">
+                    </div>
+                    <div class="col-md-4">
+                        <select class="form-select">
+                            <option>All Roles</option>
+                            <option>Admin</option>
+                            <option>Organization Admin</option>
+                            <option>Member</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Users Table -->
+                <div class="custom-table">
+                    <table class="table table-hover mb-0">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Organization</th>
+                                <th>Role</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>John Doe</strong></td>
+                                <td>john.doe@greenearthfoundation.org</td>
+                                <td>Green Earth Foundation</td>
+                                <td><span class="badge bg-danger">Admin</span></td>
+                                <td><span class="badge bg-success">Active</span></td>
+                                <td>
+                                    <button class="btn btn-sm btn-outline-success action-btn" title="Edit">
+                                        <i class="bi bi-pencil"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-warning action-btn" title="Reset Password">
+                                        <i class="bi bi-key"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-danger action-btn" title="Delete">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>Sarah Johnson</strong></td>
+                                <td>sarah.j@ecotech.com</td>
+                                <td>EcoTech Innovations</td>
+                                <td><span class="badge bg-primary">Org Admin</span></td>
+                                <td><span class="badge bg-success">Active</span></td>
+                                <td>
+                                    <button class="btn btn-sm btn-outline-success action-btn" title="Edit">
+                                        <i class="bi bi-pencil"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-warning action-btn" title="Reset Password">
+                                        <i class="bi bi-key"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-danger action-btn" title="Delete">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Content Management Section -->
+            <div class="section-content" id="content">
+                <h3 class="mb-4" style="font-weight: 700; color: white; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">
+                    📝 Content Management
+                </h3>
+
+                <!-- Tab Navigation -->
+                <ul class="nav nav-tabs mb-4">
+                    <li class="nav-item">
+                        <a class="nav-link active" data-bs-toggle="tab" href="#announcements-tab">📢 Announcements</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-bs-toggle="tab" href="#resources-tab">📚 Resources</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-bs-toggle="tab" href="#documents-tab">📄 Documents</a>
+                    </li>
+                </ul>
+
+                <div class="tab-content">
+                    <!-- Announcements Tab -->
+                    <div class="tab-pane fade show active" id="announcements-tab">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h5 style="color: white;">Manage Announcements</h5>
+                            <button class="btn btn-success">
+                                <i class="bi bi-plus-circle"></i> Create Announcement
+                            </button>
+                        </div>
+
+                        <div class="custom-table">
+                            <table class="table mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>Title</th>
+                                        <th>Type</th>
+                                        <th>Date</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>🌳 Community Clean-Up Day</td>
+                                        <td><span class="badge bg-info">Event</span></td>
+                                        <td>Jan 29, 2026</td>
+                                        <td><span class="badge bg-success">Published</span></td>
+                                        <td>
+                                            <button class="btn btn-sm btn-outline-success action-btn"><i class="bi bi-pencil"></i></button>
+                                            <button class="btn btn-sm btn-outline-danger action-btn"><i class="bi bi-trash"></i></button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>🏆 Monthly Impact Awards</td>
+                                        <td><span class="badge bg-warning">News</span></td>
+                                        <td>Jan 28, 2026</td>
+                                        <td><span class="badge bg-success">Published</span></td>
+                                        <td>
+                                            <button class="btn btn-sm btn-outline-success action-btn"><i class="bi bi-pencil"></i></button>
+                                            <button class="btn btn-sm btn-outline-danger action-btn"><i class="bi bi-trash"></i></button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Resources Tab -->
+                    <div class="tab-pane fade" id="resources-tab">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h5 style="color: white;">Resource Library</h5>
+                            <button class="btn btn-success">
+                                <i class="bi bi-upload"></i> Upload Resource
+                            </button>
+                        </div>
+                        <div class="alert alert-info">
+                            <i class="bi bi-info-circle"></i> Resource management interface would display here
+                        </div>
+                    </div>
+
+                    <!-- Documents Tab -->
+                    <div class="tab-pane fade" id="documents-tab">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h5 style="color: white;">Document Management</h5>
+                            <button class="btn btn-success">
+                                <i class="bi bi-upload"></i> Upload Document
+                            </button>
+                        </div>
+                        <div class="alert alert-info">
+                            <i class="bi bi-info-circle"></i> Document management interface would display here
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Impact Data Section -->
+            <div class="section-content" id="impact">
+                <h3 class="mb-4" style="font-weight: 700; color: white; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">
+                    📊 Impact Data Management
+                </h3>
+
+                <!-- Stats Summary -->
+                <div class="row g-4 mb-4">
+                    <div class="col-md-4">
+                        <div class="stat-card">
+                            <h6 class="text-muted">Total Submissions</h6>
+                            <h2 class="text-success">1,847</h2>
+                            <small class="text-muted">This month</small>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="stat-card">
+                            <h6 class="text-muted">Pending Review</h6>
+                            <h2 class="text-warning">23</h2>
+                            <small class="text-muted">Needs verification</small>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="stat-card">
+                            <h6 class="text-muted">Flagged Entries</h6>
+                            <h2 class="text-danger">5</h2>
+                            <small class="text-muted">Suspicious data</small>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Impact Data Table -->
+                <div class="custom-table">
+                    <table class="table mb-0">
+                        <thead>
+                            <tr>
+                                <th>Organization</th>
+                                <th>Metric Type</th>
+                                <th>Value</th>
+                                <th>Date Submitted</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Green Earth Foundation</td>
+                                <td>CO₂ Reduction</td>
+                                <td><strong>45 tons</strong></td>
+                                <td>Jan 28, 2026</td>
+                                <td><span class="badge bg-success">Verified</span></td>
+                                <td>
+                                    <button class="btn btn-sm btn-outline-primary action-btn"><i class="bi bi-eye"></i></button>
+                                    <button class="btn btn-sm btn-outline-danger action-btn"><i class="bi bi-flag"></i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>EcoTech Innovations</td>
+                                <td>Waste Diverted</td>
+                                <td><strong>1200 kg</strong></td>
+                                <td>Jan 27, 2026</td>
+                                <td><span class="badge bg-warning">Pending</span></td>
+                                <td>
+                                    <button class="btn btn-sm btn-success action-btn"><i class="bi bi-check-circle"></i></button>
+                                    <button class="btn btn-sm btn-danger action-btn"><i class="bi bi-x-circle"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Analytics Section -->
+            <div class="section-content" id="analytics">
+                <h3 class="mb-4" style="font-weight: 700; color: white; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">
+                    📈 Analytics & Reports
+                </h3>
+
+                <div class="row g-4 mb-4">
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">📊 Generate Report</h5>
+                                <form>
+                                    <div class="mb-3">
+                                        <label class="form-label">Report Type</label>
+                                        <select class="form-select">
+                                            <option>Platform-wide Summary</option>
+                                            <option>Organization Performance</option>
+                                            <option>Impact Metrics</option>
+                                            <option>User Engagement</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Date Range</label>
+                                        <select class="form-select">
+                                            <option>Last 7 Days</option>
+                                            <option>Last 30 Days</option>
+                                            <option>Last Quarter</option>
+                                            <option>Custom Range</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Export Format</label>
+                                        <select class="form-select">
+                                            <option>PDF</option>
+                                            <option>CSV</option>
+                                            <option>Excel</option>
+                                        </select>
+                                    </div>
+                            
+                                    <button type="button" class="btn btn-success w-100" id="generatePDF"></button>
+                                        <i class="bi bi-download"></i> Generate Report
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">📁 Recent Reports</h5>
+                                <div class="list-group">
+                                    <a href="#" class="list-group-item list-group-item-action">
+                                        <div class="d-flex justify-content-between">
+                                            <div>
+                                                <i class="bi bi-file-pdf text-danger"></i> Monthly Summary - December 2025
+                                            </div>
+                                            <small class="text-muted">Jan 1, 2026</small>
+                                        </div>
+                                    </a>
+                                    <a href="#" class="list-group-item list-group-item-action">
+                                        <div class="d-flex justify-content-between">
+                                            <div>
+                                                <i class="bi bi-file-excel text-success"></i> Q4 Impact Metrics
+                                            </div>
+                                            <small class="text-muted">Dec 31, 2025</small>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="chart-container">
+                    <h5 class="mb-3">📈 Platform Growth</h5>
+                    <div class="text-center text-muted" style="padding: 80px 0; position: relative; z-index: 1;">
+                        <i class="bi bi-bar-chart" style="font-size: 60px; color: #4CAF50;"></i>
+                        <p class="mt-3">Analytics charts would display here<br>
+                        <small>Showing organizations & users growth over time</small></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Settings Section -->
+            <div class="section-content" id="settings">
+                <h3 class="mb-4" style="font-weight: 700; color: white; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">
+                    ⚙️ Platform Settings
+                </h3>
+
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">General Settings</h5>
+                                <form>
+                                    <div class="mb-3">
+                                        <label class="form-label">Platform Name</label>
+                                        <input type="text" class="form-control" value="Environmental Impact Tracker">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Admin Email</label>
+                                        <input type="email" class="form-control" value="admin@impacttracker.org">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Support Email</label>
+                                        <input type="email" class="form-control" value="support@impacttracker.org">
+                                    </div>
+                                    <button type="submit" class="btn btn-success">💾 Save Changes</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Notification Settings</h5>
+                                <div class="form-check form-switch mb-3">
+                                    <input class="form-check-input" type="checkbox" id="emailNotif" checked>
+                                    <label class="form-check-label" for="emailNotif">
+                                        Email Notifications for New Registrations
+                                    </label>
+                                </div>
+                                <div class="form-check form-switch mb-3">
+                                    <input class="form-check-input" type="checkbox" id="flagNotif" checked>
+                                    <label class="form-check-label" for="flagNotif">
+                                        Alert on Flagged Data
+                                    </label>
+                                </div>
+                                <div class="form-check form-switch mb-3">
+                                    <input class="form-check-input" type="checkbox" id="reportNotif">
+                                    <label class="form-check-label" for="reportNotif">
+                                        Weekly Summary Reports
+                                    </label>
+                                </div>
+                                <button class="btn btn-success">💾 Save Preferences</button>
+                            </div>
+                        </div>
+
+                        <div class="card mt-4">
+                            <div class="card-body">
+                                <h5 class="card-title">🔑 API Keys</h5>
+                                <div class="mb-3">
+                                    <label class="form-label">Production API Key</label>
+                                    <div class="input-group">
+                                        <input type="password" class="form-control" value="sk_prod_12345678abcdefgh">
+                                        <button class="btn btn-outline-secondary" type="button">
+                                            <i class="bi bi-eye"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <button class="btn btn-warning">
+                                    <i class="bi bi-arrow-repeat"></i> Regenerate Key
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // Section Navigation with smooth animations
+        document.querySelectorAll('.sidebar-menu-item').forEach(item => {
+            item.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Remove active class from all menu items
+                document.querySelectorAll('.sidebar-menu-item').forEach(i => i.classList.remove('active'));
+                // Add active class to clicked item
+                this.classList.add('active');
+                
+                // Hide all sections
+                document.querySelectorAll('.section-content').forEach(section => {
+                    section.classList.remove('active');
+                });
+                
+                // Show selected section with animation
+                const sectionId = this.getAttribute('data-section');
+                if (sectionId) {
+                    setTimeout(() => {
+                        document.getElementById(sectionId).classList.add('active');
+                    }, 100);
+                }
+            });
+        });
+
+        // Action button click effects with haptic feedback simulation
+        document.querySelectorAll('.action-btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                const action = this.getAttribute('title');
+                
+                // Visual feedback
+                this.style.transform = 'scale(0.9)';
+                setTimeout(() => {
+                    this.style.transform = '';
+                }, 100);
+                
+                console.log(`Action: ${action}`);
+                
+                // Show toast notification (you can implement a toast library)
+                showToast(`${action} action triggered!`);
+            });
+        });
+
+        // Simple toast notification
+        function showToast(message) {
+            const toast = document.createElement('div');
+            toast.style.cssText = `
+                position: fixed;
+                bottom: 30px;
+                right: 30px;
+                background: linear-gradient(135deg, #4CAF50, #81C784);
+                color: white;
+                padding: 15px 25px;
+                border-radius: 10px;
+                box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+                z-index: 9999;
+                animation: slideIn 0.3s ease-out;
+            `;
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.style.animation = 'slideOut 0.3s ease-out';
+                setTimeout(() => toast.remove(), 300);
+            }, 2000);
+        }
+
+        // Add CSS animations for toast
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
+                from { transform: translateX(400px); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+            @keyframes slideOut {
+                from { transform: translateX(0); opacity: 1; }
+                to { transform: translateX(400px); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Stat card counter animation on load
+        document.querySelectorAll('.stat-card h3').forEach(statNumber => {
+            const finalNumber = parseInt(statNumber.textContent.replace(/,/g, ''));
+            let currentNumber = 0;
+            const increment = finalNumber / 50;
+            
+            const timer = setInterval(() => {
+                currentNumber += increment;
+                if (currentNumber >= finalNumber) {
+                    statNumber.textContent = finalNumber.toLocaleString();
+                    clearInterval(timer);
+                } else {
+                    statNumber.textContent = Math.floor(currentNumber).toLocaleString();
+                }
+            }, 20);
+        });
+    </script>
+    <script>
+const { jsPDF } = window.jspdf;
+
+document.getElementById("generatePDF")?.addEventListener("click", () => {
+    const doc = new jsPDF();
+
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(18);
+    doc.text("Environmental Impact Report", 20, 20);
+
+    doc.setFontSize(12);
+    doc.setFont("helvetica", "normal");
+    doc.text("Generated by Admin Portal", 20, 30);
+
+    doc.line(20, 35, 190, 35);
+
+    doc.text("Report Type: Platform-wide Summary", 20, 50);
+    doc.text("Date Range: Last 30 Days", 20, 60);
+    doc.text("Exported on: " + new Date().toLocaleDateString(), 20, 70);
+
+    doc.setFont("helvetica", "bold");
+    doc.text("Key Metrics", 20, 90);
+
+    doc.setFont("helvetica", "normal");
+    doc.text("• Total Organizations: 547", 25, 105);
+    doc.text("• Active Users: 3,421", 25, 115);
+    doc.text("• CO₂ Reduced: 1,245 tons", 25, 125);
+    doc.text("• Pending Approvals: 89", 25, 135);
+
+    doc.line(20, 150, 190, 150);
+
+    doc.setFontSize(10);
+    doc.text(
+        "This report is system generated and intended for administrative use only.",
+        20,
+        165
+    );
+
+    doc.save("Environmental_Impact_Report.pdf");
+});
+</script>
+</body>
+</html>
+
+
+
+
