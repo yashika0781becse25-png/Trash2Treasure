@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Community Dashboard - GreenGrid</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #ecf7f1 0%, #30ac5f 100%);
+    min-height: 100vh;
+    color: #2c3e50;
+
+        /* Main Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Welcome Header */
+        .welcome-header {
+            background: white;
+            border-radius: 20px;
+            padding: 50px 40px;
+            text-align: center;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+
+        .welcome-header h1 {
+            color: #667eea;
+            font-size: 3em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .welcome-header p {
+            color: #666;
+            font-size: 1.3em;
+        }
+
+        /* Cards Grid */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 40px 30px;
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 450px;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 50px rgba(102, 126, 234, 0.3);
+        }
+
+        .card-1 {
+            background: #f8f9ff;
+        }
+
+        .card-2 {
+            background: #f8f9ff;
+        }
+
+        .card-3 {
+            background: #f8f9ff;
+        }
+
+        .card-icon-wrapper {
+            width: 150px;
+            height: 150px;
+            margin: 0 auto 30px;
+            background: white;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.15);
+            border: 3px solid #667eea;
+        }
+
+        .card-icon {
+            font-size: 5em;
+        }
+
+        .card h2 {
+            color: #667eea;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+        }
+
+        .card p {
+            color: #666;
+            font-size: 1.1em;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            flex-grow: 1;
+        }
+
+        .card-button {
+    background: #ecf7f1;
+    color: #2c3e50;
+    border: 2px solid #30ac5f;
+    padding: 15px 40px;
+    font-size: 1.1em;
+    font-weight: 700;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(48, 172, 95, 0.25);
+    text-transform: uppercase;
+}
+
+        .card-button:hover {
+    background: #30ac5f;
+    color: white;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(48, 172, 95, 0.45);
+}
+        .card-button:active {
+            transform: translateY(-1px);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .cards-grid {
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 20px 15px;
+            }
+
+            .welcome-header h1 {
+                font-size: 2em;
+                flex-direction: column;
+            }
+
+            .welcome-header p {
+                font-size: 1.1em;
+            }
+
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .card {
+                min-height: auto;
+            }
+
+            .card-icon-wrapper {
+                width: 120px;
+                height: 120px;
+            }
+
+            .card-icon {
+                font-size: 4em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .welcome-header {
+                padding: 30px 20px;
+            }
+
+            .card {
+                padding: 30px 20px;
+            }
+
+            .card h2 {
+                font-size: 1.5em;
+            }
+
+            .card p {
+                font-size: 1em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Welcome Header -->
+        <div class="welcome-header">
+            <h1>
+                <span>🏘️</span>
+                Welcome to Community Dashboard
+            </h1>
+            <p>Manage your environmental impact and community engagement</p>
+        </div>
+
+        <!-- Cards Grid -->
+        <div class="cards-grid">
+            <!-- Card 1: Organization Details -->
+            <div class="card card-1">
+                <div>
+                    <div class="card-icon-wrapper">
+                        <div class="card-icon">📋</div>
+                    </div>
+                    <h2>Organization Details</h2>
+                    <p>Register your organization and start making a difference in your community</p>
+                </div>
+                
+                <button class="card-button" onclick="handleSubmitDetails()">Submit Your Details</button>
+            </div>
+
+            <!-- Card 2: Impact Tracking -->
+            <div class="card card-2">
+                <div>
+                    <div class="card-icon-wrapper">
+                        <div class="card-icon">📊</div>
+                    </div>
+                    <h2>Impact Tracking</h2>
+                    <p>Monitor your environmental contributions and see your real-time impact metrics</p>
+                </div>
+                <button class="card-button" onclick="window.location.href='my_impactt.html'">
+    Submit Your Details
+</button>  </div>
+
+            <!-- Card 3: Announcements -->
+            <div class="card card-3">
+                <div>
+                    <div class="card-icon-wrapper">
+                        <div class="card-icon">📢</div>
+                    </div>
+                    <h2>Announcements</h2>
+                    <p>Stay updated with the latest news, events, and community announcements</p>
+                </div>
+                <button class="card-button" onclick="handleViewAnnouncements()">View Announcements</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Button Click Handlers
+        function handleSubmitDetails() {
+            alert('Redirecting to Organization Registration...');
+            // window.location.href = 'organization-details.html';
+        }
+
+        function handleTrackImpact() {
+            alert('Opening Impact Tracking Dashboard...');
+            // window.location.href = 'my-impact-page-complete.html';
+        }
+
+        function handleViewAnnouncements() {
+            alert('Loading Community Announcements...');
+            // window.location.href = 'announcements.html';
+        }
+
+        // Optional: Add smooth scroll animations
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.card');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach((entry, index) => {
+                    if (entry.isIntersecting) {
+                        setTimeout(() => {
+                            entry.target.style.opacity = '1';
+                            entry.target.style.transform = 'translateY(0)';
+                        }, index * 100);
+                    }
+                });
+            });
+
+            cards.forEach(card => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                observer.observe(card);
+            });
+        });
+    </script>
+</body>
+</html> 
