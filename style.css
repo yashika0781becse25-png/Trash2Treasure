@@ -1,5 +1,4 @@
-
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap');
 
 * {
   margin: 0;
@@ -29,18 +28,7 @@ body {
     z-index: 1000;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
 }
-#go-top {
-      width: 40px;
-      line-height: 40px;
-      background-color: #10367e;
-      color: white;
-      position: fixed;
-      /*containg absolute also*/
-      text-align: center;
-      cursor: pointer;
-      bottom: 50px;
-      right: 50px;
-    }
+
 .nav-container {
     max-width: 1200px;
     margin: auto;
@@ -327,4 +315,57 @@ body {
 .eco-navbar-horizontal .nav,
 .eco-navbar-horizontal .nav-pills {
   all: unset;
+}
+.section {
+  padding: 80px 20px;
+  text-align: center;
+  background-color: #f0f8f5; /* light greenish background */
+}
+
+#mission {
+  background-color: #e2f2e8; /* slightly different shade to separate sections */
+}
+
+h2 {
+  font-size: 2rem;
+  color: #2d6a4f; /* greenish */
+  margin-bottom: 20px;
+}
+
+p {
+  font-size: 1.2rem;
+  max-width: 800px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+.map-section {
+  padding: 60px 10%;
+  background-color: #eaf7ef;
+}
+
+.map-container {
+  display: flex;
+  gap: 40px;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.map-box iframe {
+  width: 100%;
+  max-width: 500px;
+  height: 300px;
+  border-radius: 15px;
+  border: none;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+}
+
+.map-info {
+  max-width: 400px;
+}
+
+.map-info h2 {
+  color: #114b2f;
+  margin-bottom: 15px;
 }
