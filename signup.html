@@ -1,0 +1,63 @@
+<html>
+<head>
+<title>SignUp/Login</title>
+</head>
+<body>
+
+<div class="modal fade" tabindex="-1" id="divSignup">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header bg-primary text-white">
+          <h5 class="modal-title">Signup Here</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>
+          <form>
+            <div class="mb-3">
+              <label for="exampleInputEmail1" class="form-label" >Email address</label>
+              <input type="email" class="form-control" id="txtEmail" aria-describedby="emailHelp" required>
+              <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+              <div style="display: flex;">
+                <div style="margin-right: 10px;" id="errPicE"></div>
+                <div id="errMsgE"></div>
+              </div>
+
+            </div>
+            <div class="mb-3">
+              <label for="exampleInputPassword1" class="form-label">Password <i class="fa-solid fa-eye fa-bounce"
+                  id="eye"></i></label>
+              <input type="password" class="form-control" id="txtPwd" required>
+              <div id="lblPwd" style="color: red;"></div>
+
+
+            </div>
+            <div class="mb-3 form-check">
+              <label class="form-check-label" for="exampleCheck1">
+                <tr>
+                  <td>
+                    I AM <br>
+                    <select class="form-select" id="combouser">
+                      <option>Select</option>
+                      <option value="oragnaization">ORGANIZATION</option>
+                      <option value="player">PLAYER</option>
+                      
+
+                    </select>
+                  </td>
+                </tr>
+              </label>
+            </div>
+
+          </form>
+          </p>
+        </div>
+        <div class="modal-footer">
+
+          <button type="button" class="btn btn-primary" id="Signup">Signup</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  </body>
+  </html>
