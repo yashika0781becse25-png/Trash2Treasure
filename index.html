@@ -5,6 +5,7 @@
   <title>Trash2Treasure</title>
   <link rel="stylesheet" href="style.css">
   <link rel="icon" href="/Users/akshitakaushik/Downloads/Favicon.jpeg">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
 </head>
 <body>
@@ -21,15 +22,21 @@
         <!-- NAV LINKS (HORIZONTAL) -->
         <ul class="nav-menu">
             <li><a href="#" class="nav-link active" onclick="showPage('home')">Home</a></li>
-            <li><a href="#" class="nav-link" onclick="showPage('dashboard')">Dashboard</a></li>
+            <li><a href="dashboard.html" target="_blank" class="nav-link" onclick="showPage('dashboard')">Dashboard</a></li>
             <li><a href="#" class="nav-link" onclick="showPage('community')">Community</a></li>
-            <li><a href="my_impact.html" class="nav-link" onclick="showPage('impact')">My Impact</a></li>
-            <li><a href="signup.html" target="_blank" class="nav-link" onclick="showPage('signup')">SignUp/Login</a></li>
+            <li><a href="my_impact.html" target="_blank"class="nav-link" onclick="showPage('impact')">My Impact</a></li>
+            <li>
+  <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#authModal">
+    SignUp/Login
+  </a>
+</li>
+
         </ul>
 
     </div>
 </nav>
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
   <section class="hero">
     <div class="overlay"></div>
@@ -38,9 +45,110 @@
       <h1></h1>
       <h1>Trash Today,<br>Treasure Tomorrow.</h1>
       <p>Transforming everyday waste into sustainable treasures for a greener future.</p>
-      <button>Get Started</button>
+      <button 
+  class="btn btn-success"
+  data-bs-toggle="modal"
+  data-bs-target="#authModal">
+  Get Started
+</button>
+
     </div>
   </section>
+  <!-- SIGNUP / LOGIN MODAL -->
+<div class="bootstrap-scope">
+  <div class="modal fade" id="authModal" tabindex="-1">
+
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title">Welcome to Trash2Treasure</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body">
+
+        <!-- TABS -->
+        <ul class="nav nav-pills mb-3 justify-content-center">
+          <li class="nav-item">
+            <button class="nav-link active" data-bs-toggle="pill" data-bs-target="#signupTab">
+              Signup
+            </button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link" data-bs-toggle="pill" data-bs-target="#loginTab">
+              Login
+            </button>
+          </li>
+        </ul>
+
+        <div class="tab-content">
+
+          <!-- SIGNUP -->
+         <div class="tab-pane fade show active" id="signupTab">
+  <form>
+
+    <!-- EMAIL -->
+    <div class="mb-3">
+      <label class="form-label">Email address</label>
+      <input type="email" class="form-control" id="txtEmail" required>
+      <div class="form-text">
+        We'll never share your email with anyone else.
+      </div>
+      <div style="display:flex; gap:10px;">
+        <div id="errPicE"></div>
+        <div id="errMsgE"></div>
+      </div>
+    </div>
+
+    <!-- PASSWORD -->
+    <div class="mb-3">
+      <label class="form-label">
+        Password
+        <i class="fa-solid fa-eye" id="eye"></i>
+      </label>
+      <input type="password" class="form-control" id="txtPwd" required>
+      <div id="lblPwd" style="color:red;"></div>
+    </div>
+
+    <!-- USER TYPE -->
+    <div class="mb-3">
+      <label class="form-label">I AM</label>
+      <select class="form-select" id="combouser" required>
+        <option value="">Select</option>
+        <option value="organization">ORGANIZATION</option>
+        <option value="player">PLAYER</option>
+      </select>
+    </div>
+
+    <!-- SIGNUP BUTTON -->
+    <button type="button" class="btn btn-success w-100" id="Signup">
+      Signup
+    </button>
+
+  </form>
+</div>
+
+          <!-- LOGIN -->
+          <div class="tab-pane fade" id="loginTab">
+            <form>
+              <div class="mb-3">
+                <input type="email" class="form-control" placeholder="Email" required>
+              </div>
+              <div class="mb-3">
+                <input type="password" class="form-control" placeholder="Password" required>
+              </div>
+              <button class="btn btn-primary w-100">Login</button>
+            </form>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
 <footer class="eco-footer">
     <div class="footer-container">
 
