@@ -6,6 +6,15 @@
     <title>Trash2Treasure - Dashboard</title>
     <link rel="stylesheet" href="index.css">
 </head>
+<script>
+
+    function showPrev(fileRef, prevRef) {
+      const [file] = fileRef.files
+      if (file) {
+        prevRef.src = URL.createObjectURL(file)
+      }
+    }
+  </script>
 <body>
     <div class="container">
         <!-- DASHBOARD PAGE -->
@@ -48,8 +57,24 @@
                                     <option value="fair">Fair - Some damage</option>
                                     <option value="poor">Poor - Heavily damaged</option>
                                     <option value="broken">Broken - Not working</option>
+
                                 </select>
+
                             </div>
+                            <div class="upload-box">
+  <label class="form-label upload-title">UPLOAD YOUR DEVICE IMAGE</label>
+
+
+  <div class="upload-row">
+    <input type="file" id="profilePic" accept="image/*"
+           onchange="showPrev(this, prevImg)">
+
+    <div class="preview-box">
+      <img src="pics/customer.jpg" id="prevImg" alt="Preview">
+    </div>
+  </div>
+</div>
+
                             <button type="submit" class="btn btn-primary" style="width: 100%;">Submit Device</button>
                         </form>
                         <div id="deviceResult"></div>
