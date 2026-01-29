@@ -1,4 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap');
+
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap');
 
 * {
   margin: 0;
@@ -28,7 +29,18 @@ body {
     z-index: 1000;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
 }
-
+#go-top {
+      width: 40px;
+      line-height: 40px;
+      background-color: #10367e;
+      color: white;
+      position: fixed;
+      /*containg absolute also*/
+      text-align: center;
+      cursor: pointer;
+      bottom: 50px;
+      right: 50px;
+    }
 .nav-container {
     max-width: 1200px;
     margin: auto;
@@ -316,5 +328,3 @@ body {
 .eco-navbar-horizontal .nav-pills {
   all: unset;
 }
-
-
