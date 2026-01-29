@@ -1,0 +1,388 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Organization Registration Form</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #e8f5e9 0%, #b2dfdb 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            padding: 50px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .icon {
+            width: 80px;
+            height: 80px;
+            background: #4CAF50;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+        }
+
+        h1 {
+            color: #2e7d32;
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 16px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            color: #333;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .required {
+            color: #f44336;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        input[type="url"],
+        input[type="number"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 15px;
+            font-family: inherit;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #4CAF50;
+            box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .checkbox-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 12px;
+            margin-top: 10px;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            margin-right: 10px;
+            cursor: pointer;
+        }
+
+        .checkbox-item label {
+            margin: 0;
+            font-weight: 400;
+            cursor: pointer;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 18px;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 30px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .submit-btn:hover {
+            background: #45a049;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+        .helper-text {
+            font-size: 13px;
+            color: #666;
+            margin-top: 5px;
+        }
+        .success-message {
+            display: none;
+            background: #e8f5e9;
+            border: 2px solid #4CAF50;
+            color: #2e7d32;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: 600;
+        }
+        @media (max-width: 600px) {
+            .container {
+                padding: 30px 20px;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            h1 {
+                font-size: 26px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="icon">📋</div>
+            <h1>Organization Details</h1>
+            <p class="subtitle">Register your organization and start making a difference in your community</p>
+        </div>
+
+        <div id="successMessage" class="success-message">
+            ✓ Organization registered successfully! Redirecting to Impact Tracking...
+        </div>
+
+        <form id="orgForm">
+            <!-- Basic Information -->
+            <div class="form-group">
+                <label for="orgName">Organization Name <span class="required">*</span></label>
+                <input type="text" id="orgName" name="orgName" required placeholder="Enter your organization's name">
+            </div>
+
+            <div class="form-group">
+                <label for="orgType">Organization Type <span class="required">*</span></label>
+                <select id="orgType" name="orgType" required>
+                    <option value="">Select organization type</option>
+                    <option value="nonprofit">Non-Profit Organization</option>
+                    <option value="community">Community Group</option>
+                    <option value="school">Educational Institution</option>
+                    <option value="business">Business/Corporation</option>
+                    <option value="government">Government Agency</option>
+                    <option value="cooperative">Cooperative</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+
+            <!-- Contact Information -->
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="contactName">Primary Contact Name <span class="required">*</span></label>
+                    <input type="text" id="contactName" name="contactName" required placeholder="Full name">
+                </div>
+
+                <div class="form-group">
+                    <label for="contactTitle">Contact Title/Role</label>
+                    <input type="text" id="contactTitle" name="contactTitle" placeholder="e.g., Director, Coordinator">
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="email">Email Address <span class="required">*</span></label>
+                    <input type="email" id="email" name="email" required placeholder="contact@organization.org">
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" id="phone" name="phone" placeholder="(555) 123-4567">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="address">Street Address</label>
+                <input type="text" id="address" name="address" placeholder="123 Main Street">
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="city">City <span class="required">*</span></label>
+                    <input type="text" id="city" name="city" required placeholder="City name">
+                </div>
+
+                <div class="form-group">
+                    <label for="state">State/Province</label>
+                    <input type="text" id="state" name="state" placeholder="State or province">
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="country">Country <span class="required">*</span></label>
+                    <input type="text" id="country" name="country" required placeholder="Country name">
+                </div>
+
+                <div class="form-group">
+                    <label for="zipCode">Postal/Zip Code</label>
+                    <input type="text" id="zipCode" name="zipCode" placeholder="12345">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="website">Website</label>
+                <input type="url" id="website" name="website" placeholder="https://www.yourorganization.org">
+            </div>
+
+            <div class="form-group">
+                <label for="established">Year Established</label>
+                <input type="number" id="established" name="established" placeholder="YYYY" min="1800" max="2026">
+            </div>
+
+            <div class="form-group">
+                <label for="teamSize">Team Size</label>
+                <select id="teamSize" name="teamSize">
+                    <option value="">Select team size</option>
+                    <option value="1-5">1-5 members</option>
+                    <option value="6-20">6-20 members</option>
+                    <option value="21-50">21-50 members</option>
+                    <option value="51-100">51-100 members</option>
+                    <option value="100+">100+ members</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Primary Environmental Focus Areas <span class="required">*</span></label>
+                <p class="helper-text">Select all that apply</p>
+                <div class="checkbox-group">
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="focus1" name="focusAreas" value="climate_action">
+                        <label for="focus1">Climate Action</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="focus2" name="focusAreas" value="waste_reduction">
+                        <label for="focus2">Waste Reduction</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="focus3" name="focusAreas" value="renewable_energy">
+                        <label for="focus3">Renewable Energy</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="focus4" name="focusAreas" value="conservation">
+                        <label for="focus4">Conservation</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="focus5" name="focusAreas" value="water_quality">
+                        <label for="focus5">Water Quality</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="focus6" name="focusAreas" value="air_quality">
+                        <label for="focus6">Air Quality</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="focus7" name="focusAreas" value="sustainable_agriculture">
+                        <label for="focus7">Sustainable Agriculture</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="focus8" name="focusAreas" value="education">
+                        <label for="focus8">Environmental Education</label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="mission">Mission Statement</label>
+                <textarea id="mission" name="mission" placeholder="Describe your organization's environmental mission and goals..."></textarea>
+                <p class="helper-text">Tell us about your organization's purpose and impact goals</p>
+            </div>
+
+            <button type="submit" class="submit-btn">Submit Your Details</button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('orgForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const focusAreas = document.querySelectorAll('input[name="focusAreas"]:checked');
+            if (focusAreas.length === 0) {
+                alert('Please select at least one environmental focus area');
+                return;
+            }
+            const formData = new FormData(this);
+            const data = {
+                organizationName: formData.get('orgName'),
+                organizationType: formData.get('orgType'),
+                primaryContact: {
+                    name: formData.get('contactName'),
+                    title: formData.get('contactTitle'),
+                    email: formData.get('email'),
+                    phone: formData.get('phone')
+                },
+                location: {
+                    address: formData.get('address'),
+                    city: formData.get('city'),
+                    state: formData.get('state'),
+                    country: formData.get('country'),
+                    zipCode: formData.get('zipCode')
+                },
+                website: formData.get('website'),
+                yearEstablished: formData.get('established'),
+                teamSize: formData.get('teamSize'),
+                focusAreas: Array.from(focusAreas).map(cb => cb.value),
+                missionStatement: formData.get('mission'),
+                registrationDate: new Date().toISOString()
+            };
+            const successMsg = document.getElementById('successMessage');
+            successMsg.style.display = 'block';
+            console.log('Organization Registration Data:', data);
+            setTimeout(() => {
+                alert('Registration complete! In production, this would redirect to your Impact Tracking dashboard.');
+            }, 2000);
+        });
+    </script>
+</body>
+</html>
